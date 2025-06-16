@@ -24,6 +24,7 @@ docker run -it --privileged \
   -v /usr/share/zoneinfo:/usr/share/zoneinfo \
   -v /etc/timezone:/etc/timezone \
   -v /var/run/dbus:/var/run/dbus \
+  --name ms-timezone-modifier \
   tzmodifier
 ```
 
@@ -33,6 +34,7 @@ docker run --rm -it --privileged \
 -v /etc/localtime:/etc/localtime \
 -v /usr/share/zoneinfo:/usr/share/zoneinfo \
 -v /etc/timezone:/etc/timezone \
+--name ms-timezone-modifier \
 tzmodifier list
 ```
 

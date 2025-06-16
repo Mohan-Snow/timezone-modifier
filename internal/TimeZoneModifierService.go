@@ -59,7 +59,15 @@ func SetTimezone(timezone string) {
 	// modify through /etc/timezone only
 	if err := updateTimezoneFile(timezone); err == nil {
 		fmt.Printf("Set timezone in /etc/timezone to: %s\n", timezone)
-		fmt.Println("Note: /etc/localtime not updated - system may need reboot")
+
+		err := updateLocalTimeFile(timezone)
+		if err != nil {
+			fmt.Printf("Set timezone to US/Alaska for etc/localtime failed. Error: %v\n", err)
+			fmt.Println("Note: /etc/localtime not updated - system may need reboot")
+			return
+		}
+
+		fmt.Println("etc/timezone and etc/localtime updated successfully")
 		return
 	}
 
@@ -68,6 +76,10 @@ func SetTimezone(timezone string) {
 
 func updateTimezoneFile(timezone string) error {
 	return os.WriteFile("/etc/timezone", []byte(timezone+"\n"), 0644)
+}
+
+func updateLocalTimeFile(timezone string) error {
+	return os.Setenv("TZ", timezone)
 }
 
 func GetCurrentTimezone() {
